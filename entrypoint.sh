@@ -55,6 +55,8 @@ function docker_build() {
     docker_tag_args="$docker_tag_args -t $2/$INPUT_REPO:$tag"
   done
 
+  if [ ! -z "${INPUT_CWD}" ]; then cd ${INPUT_CWD}; fi
+  pwd
   docker build $INPUT_EXTRA_BUILD_ARGS -f $INPUT_DOCKERFILE $docker_tag_args $INPUT_PATH
   echo "== FINISHED DOCKERIZE"
 }

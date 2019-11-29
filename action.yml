@@ -35,6 +35,9 @@ inputs:
   path:
     description: Path to Dockerfile, defaults to the working directory
     default: .
+  cwd:
+    description: Current Working directory
+    default: .
 runs:
   using: docker
   image: Dockerfile
