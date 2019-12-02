@@ -2,15 +2,14 @@
 set -e
 
 function main() {
-  sanitize "${INPUT_ACCESS_KEY_ID}" "access_key_id"
-  sanitize "${INPUT_SECRET_ACCESS_KEY}" "secret_access_key"
-  sanitize "${INPUT_REGION}" "region"
-  sanitize "${INPUT_ACCOUNT_ID}" "account_id"
+  sanitize "${AWS_ACCESS_KEY_ID}" "access_key_id"
+  sanitize "${AWS_SECRET_ACCESS_KEY}" "secret_access_key"
+  sanitize "${AWS_DEFAULT_REGION}" "region"
+  sanitize "${AWS_ACCOUNT_ID}" "account_id"
   sanitize "${INPUT_REPO}" "repo"
 
-  ACCOUNT_URL="$INPUT_ACCOUNT_ID.dkr.ecr.$INPUT_REGION.amazonaws.com"
+  ACCOUNT_URL="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
 
-  aws_configure
   login
   docker_build $INPUT_TAGS $ACCOUNT_URL
   create_ecr_repo $INPUT_CREATE_REPO
@@ -22,12 +21,6 @@ function sanitize() {
     >&2 echo "Unable to find the ${2}. Did you set with.${2}?"
     exit 1
   fi
-}
-
-function aws_configure() {
-  export AWS_ACCESS_KEY_ID=$INPUT_ACCESS_KEY_ID
-  export AWS_SECRET_ACCESS_KEY=$INPUT_SECRET_ACCESS_KEY
-  export AWS_DEFAULT_REGION=$INPUT_REGION
 }
 
 function login() {
