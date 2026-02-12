@@ -1,13 +1,10 @@
-FROM docker:19.03.4
+FROM docker:27-cli
 
 RUN apk update \
   && apk upgrade \
-  && apk add --no-cache --update python py-pip coreutils \
+  && apk add --no-cache --update python3 py3-pip coreutils \
   && rm -rf /var/cache/apk/* \
-  # must explicitly state version as >5.4 throws cython error
-  && pip install PyYAML==5.3.1 \
-  && pip install awscli \
-  && apk --purge -v del py-pip
+  && pip install --break-system-packages awscli
 
 ADD entrypoint.sh /entrypoint.sh
 
